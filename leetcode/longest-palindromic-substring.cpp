@@ -5,9 +5,9 @@
 
 using namespace std;
 
-bool isPalindrome(string s, int size)
+bool isPalindrome(string s, int start, int end)
 {
-    for (int i = 0, j = size - 1; j > i; i++, j--)
+    for (int i = start, j = end; j > i; i++, j--)
     {
         if (s[i] != s[j])
             return false;
@@ -15,7 +15,7 @@ bool isPalindrome(string s, int size)
 
     return true;
 }
-bool comp(pair<int, string> a, pair<int, string> b)
+bool comp(pair<int, int> a, pair<int, int> b)
 {
     return a.first > b.first;
 }
@@ -26,10 +26,10 @@ public:
     string longestPalindrome(string s)
     {
         int maxLongestNumber = 0;
-        string maxLongestStr = s.substr(0, 1);
+        pair<int, int> finalSubs = {0, 1};
         int len = s.size();
 
-        vector<pair<int, string>> allSubs;
+        vector<pair<int, int>> allSubs;
 
         for (int i = 0; i < len; i++)
         {
@@ -37,22 +37,27 @@ public:
             {
                 if (s[j] == s[i])
                 {
-                    string cand = s.substr(i, j + 1 - i);
-                    int sizeS = cand.size();
-                    allSubs.push_back({sizeS, cand});
+                    allSubs.push_back({i, j + 1 - i});
                 }
             }
         }
 
-        sort(allSubs.begin(), allSubs.end(), comp);
-
-        for (auto [sizeS, subStr] : allSubs)
+        for (auto [start, end] : allSubs)
         {
-            if (isPalindrome(subStr, sizeS))
-                return subStr;
+            if (isPalindrome(s, start, end))
+            {
+                int diff = end - start;
+                if (diff > maxLongestNumber)
+                {
+                    maxLongestNumber = diff;
+
+                    finalSubs.first = start;
+                    finalSubs.second = end;
+                }
+            }
         }
 
-        return maxLongestStr;
+        return s.substr(finalSubs.first, finalSubs.second);
     }
 };
 

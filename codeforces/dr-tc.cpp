@@ -29,11 +29,8 @@ int main()
             (c - '0') ? oneCount++ : zeroCount++;
         }
 
-        rep(j, 0, zeroCount)
-            finalQtd += oneCount + 1;
-
-        rep(j, 0, oneCount)
-            finalQtd += oneCount - 1;
+        finalQtd += zeroCount * (oneCount + 1);
+        finalQtd += oneCount * (oneCount - 1);
 
         cout << finalQtd << endl;
     }

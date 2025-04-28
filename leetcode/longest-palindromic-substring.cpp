@@ -7,6 +7,9 @@ using namespace std;
 
 bool isPalindrome(string s, int start, int end)
 {
+    if (end > s.size() - 1)
+        end = s.size() - 1;
+
     for (int i = start, j = end; j > i; i++, j--)
     {
         if (s[i] != s[j])
@@ -31,14 +34,15 @@ public:
 
         vector<pair<int, int>> allSubs;
 
+        if (len == 2) return (s[0] == s[1]) ? s : string(1, s[0]);
+
         for (int i = 0; i < len; i++)
         {
             for (int j = len - 1; j > i; j--)
             {
                 if (s[j] == s[i])
-                {
-                    allSubs.push_back({i, j + 1 - i});
-                }
+                    allSubs.push_back({i, j});
+                
             }
         }
 
@@ -56,8 +60,10 @@ public:
                 }
             }
         }
-
-        return s.substr(finalSubs.first, finalSubs.second);
+        
+        if(!maxLongestNumber) return string(1, s[0]);
+    
+        return s.substr(finalSubs.first, finalSubs.second + 1 - finalSubs.first);
     }
 };
 
